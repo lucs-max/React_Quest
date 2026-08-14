@@ -4,6 +4,7 @@ import Welcome from "./components/Welcome";
 import Footer from "./components/Footer";
 import ProfileCard from "./components/ProfileCard";
 import SummaryCard from "./components/SummaryCard";
+import MissionCard from "./components/MissionCard";
 
 const summaryData = [
   {
@@ -39,6 +40,44 @@ const summaryData = [
 
 ];
 
+const initialMissions =[
+  {
+    id: 1,
+    title: "Criar componente de perfil",
+    description: "Monte um card com nome, codinome e área favorita.",
+    technology: "React",
+    difficulty: "Fácil",
+    xp: 50,
+    completed: true,
+  },
+  {
+    id: 2,
+    title: "Reutilizar um componente",
+    description: "Use o mesmo componente para exibir dados diferentes.",
+    technology: "React",
+    difficulty: "Fácil",
+    xp: 50,
+    completed: true,
+  },
+  {
+    id: 3,
+    title: "Criar a Central de Missões",
+    description: "Exiba uma lista de missões utilizando componentes.",
+    technology: "React",
+    difficulty: "Média",
+    xp: 100,
+    completed: false,
+  },
+  {
+    id: 4,
+    title: "Investigar um erro",
+    description: "Encontre e corrija um problema de props ou estado.",
+    technology: "Debug",
+    difficulty: "Média",
+    xp: 80,
+    completed: false,
+  }
+]
 
 function App() {
   return (
