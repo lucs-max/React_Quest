@@ -1,0 +1,26 @@
+.summary-card {
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.summary-card__title {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.summary-card__value {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 2rem;
+}
+
+.summary-card__description {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  opacity: 0.7;
+}

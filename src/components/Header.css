@@ -1,0 +1,29 @@
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.header__logo {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.header__subtitle {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.header__button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}

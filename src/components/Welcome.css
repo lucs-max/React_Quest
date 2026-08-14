@@ -1,0 +1,36 @@
+.welcome{
+  width: 100%;
+  max-width: 720px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.welcome__tag{
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.welcome h1 {
+  margin-bottom: 8px;
+  font-size: 3rem;
+}
+
+.welcome h2 {
+  margin-bottom: 24px;
+  font-size: 1.4rem;
+}
+
+.welcome p {
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.welcome button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
