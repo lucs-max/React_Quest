@@ -7,12 +7,11 @@ import ProfileCard from "./components/ProfileCard";
 import SummaryCard from "./components/SummaryCard";
 import MissionCard from "./components/MissionCard";
 
-
-const initialMissions =[
+const initialMissions = [
   {
     id: 1,
     title: "Criar componente de perfil",
-    description: "Missões Disponíveis",
+    description: "Monte um card com nome, codinome e área favorita.",
     technology: "React",
     difficulty: "Fácil",
     xp: 50,
@@ -43,79 +42,81 @@ const initialMissions =[
     technology: "Debug",
     difficulty: "Média",
     xp: 80,
-    completed: false,
-  }
-]
+    completed: true,
+  },
+];
 
 function App() {
   const [missions, setMissions] = useState(initialMissions);
+
   function toggleMission(missionId) {
     const updatedMissions = missions.map((mission) => {
       if (mission.id === missionId) {
         return {
           ...mission,
-          completed: !mission.completed
-        }
-        
+          completed: !mission.completed,
+        };
       }
       return mission;
-  })
+    });
     setMissions(updatedMissions);
   }
 
-const completedMissions = missions.filter((mission) => mission.completed);    
+  const completedMissions = missions.filter((mission) => mission.completed);
 
-const compleatedMissionsCount = completedMissions.length;
+  const completedMissionsCount = completedMissions.length;
 
-const earnxp = completedMissions.reduce((total, mission) => total + mission.xp, 0);  
-const summaryData = [
-  {
-    id: 1,
-    title: "Missões",
-    value: completedMissionsCount,
-    description: `${missions.length} desafios disponíveis`,
-  },
-  {
-    id: 2,
-    title: "Projetos",
-    value: 3,
-    description: "Projetos cadastrados",
-  },
-  {
-    id: 3,
-    title: "Tecnologias",
-    value: 6,
-    description: "Tecnologias praticadas",
-  },
-  {
-    id: 4,
-    title: "XP",
-    value: 150,
-    description: "Experiência acumulada",
-  },
-  {
-    id: 5,
-    title: "Conquistas",
-    value: 2,
-    description: "Conquistas desbloqueadas",
-  },
+  const earnedXp = completedMissions.reduce(
+    (total, mission) => total + mission.xp,
+    0,
+  );
 
-];
+  const summaryData = [
+    {
+      id: 1,
+      title: "Missões",
+      value: completedMissionsCount,
+      description: `${missions.length} Missões Disponíveis`,
+    },
+    {
+      id: 2,
+      title: "Projetos",
+      value: 3,
+      description: "Projetos Cadastrados",
+    },
+    {
+      id: 3,
+      title: "Tecnologias",
+      value: 7,
+      description: "Tecnologias Praticadas",
+    },
+    {
+      id: 4,
+      title: "Objetivos",
+      value: 6,
+      description: "Objetivos Estabelecidos",
+    },
+    {
+      id: 5,
+      title: "XP",
+      value: earnedXp,
+      description: "Experiência Acumulada",
+    },
+  ];
 
-return (
-
+  return (
     <main className="app">
       <Header />
       <div className="dashboard">
         <ProfileCard
-          name="Andrea"
+          name="Andréa"
           codename="CodeMaster"
           favoriteArea="Desenvolvimento Web"
           level="Aprendiz React"
         />
+
         <section className="summary-section">
-          <h2>Resumo da jornada</h2>
-  
+          <h2>Resumo da Jornada</h2>
           <div className="summary-grid">
             {summaryData.map((item) => (
               <SummaryCard
@@ -125,19 +126,18 @@ return (
                 description={item.description}
               />
             ))}
-  
           </div>
         </section>
-  
+
         <section className="missions-section">
           <div className="section-heading">
             <div>
               <p className="section-heading__tag">Central de Missões</p>
 
-              <h2>Próximos desafios</h2>
+              <h2>Próximos Desafios</h2>
             </div>
 
-            <span>{missions.length} missões</span>
+            <span> {missions.length} missões</span>
           </div>
 
           <div className="missions-grid">
@@ -156,13 +156,11 @@ return (
           </div>
         </section>
 
-
         <Welcome />
       </div>
       <Footer />
     </main>
-  )
+  );
 }
-
 
 export default App;
