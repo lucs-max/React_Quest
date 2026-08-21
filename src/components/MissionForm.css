@@ -1,0 +1,58 @@
+.mission-form-section {
+  margin-top: 40px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.mission-form-heading {
+  margin-bottom: 20px;
+}
+.mission-form-heading p {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+.mission-form-heading h2 {
+  margin: 5px 0 0;
+}
+.mission-form {
+  display: grid;
+  gap: 16px;
+}
+.mission-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.mission-form__group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.mission-form__group input,
+.mission-form__group textarea,
+.mission-form__group select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  color: inherit;
+  font: inherit;
+}
+.mission-form__group textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+.mission-form__button {
+  justify-self: start;
+  padding: 11px 20px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
