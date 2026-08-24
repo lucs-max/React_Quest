@@ -1,10 +1,10 @@
 import "./MissionCard.css";
-function MissionCard({title,description,tecnology,difficulty,xp,completed,onToggle}){
+function MissionCard({title,description,onEdit,onDelete,technology,difficulty,xp,completed,onToggle}){
     return(
         <article className={`mission-card ${completed ? "mission-card--completed" : ""}`}>
             <div className="mission-card__header">
-                <span className="mission-card__tecnology">
-                    {tecnology}
+                <span className="mission-card__technology">
+                    {technology}
                 </span>
                 <span className="mission-card__difficulty">
                     {difficulty}
@@ -18,6 +18,12 @@ function MissionCard({title,description,tecnology,difficulty,xp,completed,onTogg
                 <strong>{xp} XP</strong>
                 <button type="button" onClick={onToggle} className="mission-card__button">
                     {completed ? "Reabrir Missao" : "Concluir Missao"}
+                </button>
+                <button type="button" onClick={onEdit} className="mission-card__button mission-card__button--edit ">
+                    Editar
+                </button>
+                <button type="button" onClick={onDelete} className="mission-card__button mission-card__button--delete ">
+                    Excluir
                 </button>
             </div>
         </article>       

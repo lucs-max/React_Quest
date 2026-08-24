@@ -8,7 +8,6 @@ import SummaryCard from "./components/SummaryCard";
 import MissionCard from "./components/MissionCard";
 import MissionForm from "./components/MissionForm";
 
-
 const initialMissions = [
   {
     id: 1,
@@ -50,7 +49,7 @@ const initialMissions = [
 
 function App() {
   const [missions, setMissions] = useState(initialMissions);
-
+  const [editingMission, setEditingMission] = useState(null);
   function toggleMission(missionId) {
     const updatedMissions = missions.map((mission) => {
       if (mission.id === missionId) {
@@ -64,9 +63,24 @@ function App() {
     setMissions(updatedMissions);
   }
 
-function addMission(newMission) {
-  setMissions([...missions, newMission]);
-}
+  function addMission(newMission) {
+    setMissions([...missions, newMission]);
+  }
+
+  function deleteMission(missionId) {
+    const updatedMissions = missions.filter(
+      (mission) => mission.id !== missionId,
+    );
+    setMissions(updatedMissions);
+  }
+  function updateMission(updatedMission) {
+    const updatedMissions = missions.map((mission) =>
+      mission.id === updatedMission.id ? updatedMission : mission,
+    );
+    setMissions(updatedMissions);
+    setEditingMission(null);
+  }
+
   const completedMissions = missions.filter((mission) => mission.completed);
 
   const completedMissionsCount = completedMissions.length;
@@ -114,9 +128,9 @@ function addMission(newMission) {
       <Header />
       <div className="dashboard">
         <ProfileCard
-          name="Andréa"
+          name="Lucca"
           codename="CodeMaster"
-          favoriteArea="Desenvolvimento Web"
+          favoriteArea="Game Development"
           level="Aprendiz React"
         />
 
@@ -133,8 +147,8 @@ function addMission(newMission) {
             ))}
           </div>
         </section>
-        
-        <MissionForm onAddMission={addMission} />    
+
+        <MissionForm onAddMission={addMission} onUpdateMission={updateMission} editingMission={editingMission} />
 
         <section className="missions-section">
           <div className="section-heading">
@@ -158,6 +172,8 @@ function addMission(newMission) {
                 xp={mission.xp}
                 completed={mission.completed}
                 onToggle={() => toggleMission(mission.id)}
+                onDelete={() => deleteMission(mission.id)}
+                onEdit={() => setEditingMission(mission)}
               />
             ))}
           </div>
@@ -169,5 +185,4 @@ function addMission(newMission) {
     </main>
   );
 }
-
 export default App;
