@@ -1,0 +1,36 @@
+.mission-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.mission-search label {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.mission-search input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ffffff2e;
+  border-radius: 8px;
+  background: #ffffff12;
+  color: inherit;
+  font: inherit;
+}
+
+.mission-search input:😛laceholder {
+  color: #ffffff80;
+}
+
+.mission-search__clear {
+  align-self: flex-start;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+} 
