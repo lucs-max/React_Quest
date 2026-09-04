@@ -11,6 +11,18 @@ function MissionSearch({ searchTerm, setSearchTerm }) {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
+
+{searchTerm && (
+            
+
+            <button 
+            type="button"
+             className="mission-search__clear"
+             onClick={() => setSearchTerm("")}>
+                Limpar
+
+            </button>
+)}
         </section>
     )
 }
