@@ -8,6 +8,7 @@ import SummaryCard from "./components/SummaryCard";
 import MissionCard from "./components/MissionCard";
 import MissionForm from "./components/MissionForm";
 import MissionSearch from "./components/MissionSearch";
+import MissionFilter from "./components/MissionFilter"; 
 const initialMissions = [
   {
     id: 1,
@@ -51,6 +52,10 @@ function App() {
   const [missions, setMissions] = useState(initialMissions);
   const [editingMission, setEditingMission] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("Todas");
+  const [technologyFilter, setTechnologyFilter] = useState("Todas");
+
+  console.log(statusFilter);
   function toggleMission(missionId) {
     const updatedMissions = missions.map((mission) => {
       if (mission.id === missionId) {
@@ -92,8 +97,19 @@ function App() {
   );
 
   const filteredMissions = missions.filter(
-    (mission) => mission.title.toLowerCase().includes(searchTerm.toLowerCase())
+    // (mission) => mission.title.toLowerCase().includes(searchTerm.toLowerCase())
+    (mission) => {
+      const matchesSearchTerm = mission.title.toLowerCase().includes(
+        searchTerm.toLowerCase()
+      );
+      const matchesStatus = statusFilter === "Todas" || (statusFilter === "Concluídas" && mission.completed) || (statusFilter === "Pendentes" && !mission.completed);
+        const matchesTechnology = technologyFilter === "Todas" ||mission.technology === technologyFilter;
+
+      return matchesSearchTerm && matchesStatus && matchesTechnology;
+    }
   );
+
+
 
   const summaryData = [
     {
@@ -160,6 +176,13 @@ function App() {
         <section className="missions-section">
             <MissionSearch searchTerm={searchTerm} 
             setSearchTerm={setSearchTerm} />
+
+            <MissionFilter 
+            statusFilter={statusFilter}
+            onStatusChange={setStatusFilter}
+            technologyFilter={technologyFilter}
+            onTechnologyChange={setTechnologyFilter}
+            />
 
           <div className="section-heading">
             <div>
