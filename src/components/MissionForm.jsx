@@ -104,7 +104,7 @@ function MissionForm({ onAddMission , editingMission,onUpdateMission }) {
                         onChange={(event) => setDifficulty(event.target.value)}
                     >
                         <option value="Fácil">Fácil</option>
-                        <option value="Médio">Médio</option>
+                        <option value="Média">Média</option>
                         <option value="Difícil">Difícil</option>
                     </select>
                 </div>
