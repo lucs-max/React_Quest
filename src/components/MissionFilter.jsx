@@ -1,6 +1,6 @@
 import './MissionFilter.css';
 
-function MissionFilter({ statusFilter, onStatusChange, technologyFilter, onTechnologyChange }) {
+function MissionFilter({ statusFilter, onStatusChange, technologyFilter, onTechnologyChange, difficultyFilter, onDifficultyChange }) {
     return (
        <section className="mission-filters">
             <div className="mission-filters__group">
@@ -34,6 +34,19 @@ function MissionFilter({ statusFilter, onStatusChange, technologyFilter, onTechn
                     <option value="Git">Git</option>
                     <option value="IA">IA</option>
                     <option value="Debug">Debug</option>
+                </select>
+
+            {/* Difficulty */}
+                <label htmlFor="difficulty-filter">Dificuldade</label>
+                <select 
+                id="difficulty-filter"
+                value={difficultyFilter}
+                onChange={(e) => onDifficultyChange(e.target.value)}
+                >
+                    <option value="Todas">Todas</option>
+                    <option value="Fácil">Fácil</option>
+                    <option value="Média">Média</option>
+                    <option value="Difícil">Difícil</option>
                 </select>
                 </div>
        </section> 
