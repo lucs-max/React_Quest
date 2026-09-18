@@ -1,6 +1,7 @@
 import './MissionFilter.css';
 
-function MissionFilter({ statusFilter, onStatusChange, technologyFilter, onTechnologyChange, difficultyFilter, onDifficultyChange }) {
+function MissionFilter({ statusFilter, onStatusChange, technologyFilter, onTechnologyChange, difficultyFilter, onDifficultyChange, sortOrder, onSortOrderChange }) {
+
     return (
        <section className="mission-filters">
             <div className="mission-filters__group">
@@ -49,7 +50,22 @@ function MissionFilter({ statusFilter, onStatusChange, technologyFilter, onTechn
                     <option value="Difícil">Difícil</option>
                 </select>
                 </div>
+            <div className="mission-filters__group">
+        {/* XP */}
+        <label htmlFor="sort-order">Ordenar</label>
+
+        <select
+          id="sort-order"
+          value={sortOrder}
+          onChange={(event) => onSortOrderChange(event.target.value)}
+        >
+          <option value="Maior XP">Maior XP</option>
+
+          <option value="Menor XP">Menor XP</option>
+        </select>
+      </div>
        </section> 
+       
     );
 }
 

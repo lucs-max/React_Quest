@@ -8,7 +8,8 @@ import SummaryCard from "./components/SummaryCard";
 import MissionCard from "./components/MissionCard";
 import MissionForm from "./components/MissionForm";
 import MissionSearch from "./components/MissionSearch";
-import MissionFilter from "./components/MissionFilter"; 
+import MissionFilter from "./components/MissionFilter";
+import ProjectCard from "./components/ProjectCard";
 const initialMissions = [
   {
     id: 1,
@@ -48,6 +49,35 @@ const initialMissions = [
   },
 ];
 
+const initialProjects = [
+  {
+    id:1,
+    title:"Desenho com Gestos",
+    description:"Aplicação que permite desenhar utilizando movimentos das mãos.",
+    technologies:[
+      "Python",
+      "OpenCV",
+      "MediaPipe"
+    ],
+    status:"Concluído"
+  },
+   {
+    id: 2,
+    title: "Detector de Invasores",
+    description: "Jogo desenvolvido em Python com detecção e interação.",
+    technologies: ["Python", "Pygame"],
+    status: "Concluído",
+  },
+  {
+    id: 3,
+    title: "Loja Virtual com IA",
+    description:
+      "Loja virtual que utiliza inteligência artificial para auxiliar o usuário.",
+    technologies: ["Python", "Flask", "HTML", "CSS"],
+    status: "Concluído",
+  },
+]
+
 function App() {
   const [missions, setMissions] = useState(initialMissions);
   const [editingMission, setEditingMission] = useState(null);
@@ -55,6 +85,7 @@ function App() {
   const [statusFilter, setStatusFilter] = useState("Todas");
   const [technologyFilter, setTechnologyFilter] = useState("Todas");
   const [difficultyFilter, setDifficultyFilter] = useState("Todas");
+  const [sortOrder, setSortOrder] = useState("Maior XP");
 
   console.log(statusFilter);
   function toggleMission(missionId) {
@@ -100,21 +131,34 @@ function App() {
   const filteredMissions = missions.filter(
     // (mission) => mission.title.toLowerCase().includes(searchTerm.toLowerCase())
     (mission) => {
-      const matchesSearchTerm = mission.title.toLowerCase().includes(
-        searchTerm.toLowerCase()
-      );
-      const matchesStatus = statusFilter === "Todas" || (statusFilter === "Concluídas" && mission.completed) || (statusFilter === "Pendentes" && !mission.completed);
-        const matchesTechnology = technologyFilter === "Todas" ||mission.technology === technologyFilter;
-      const matchesDifficulty = difficultyFilter === "Todas" || mission.difficulty === difficultyFilter;
+      const matchesSearchTerm = mission.title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesStatus =
+        statusFilter === "Todas" ||
+        (statusFilter === "Concluídas" && mission.completed) ||
+        (statusFilter === "Pendentes" && !mission.completed);
+      const matchesTechnology =
+        technologyFilter === "Todas" || mission.technology === technologyFilter;
+      const matchesDifficulty =
+        difficultyFilter === "Todas" || mission.difficulty === difficultyFilter;
 
-      return matchesSearchTerm && matchesStatus && matchesTechnology && matchesDifficulty;
-    }
+      return (
+        matchesSearchTerm &&
+        matchesStatus &&
+        matchesTechnology &&
+        matchesDifficulty
+      );
+    },
   );
 
-const sortedMissions = [...filteredMissions].sort((a, b) => b.xp - a.xp);{
+const sortedMissions = [...filteredMissions].sort((a, b) => {
+    if (sortOrder === "Menor XP") {
+      return a.xp - b.xp; //menor para o maior
+    }
 
-
-}
+    return b.xp - a.xp; //maior para o menor
+  });
 
   const summaryData = [
     {
@@ -174,22 +218,28 @@ const sortedMissions = [...filteredMissions].sort((a, b) => b.xp - a.xp);{
           </div>
         </section>
 
-        <MissionForm onAddMission={addMission} onUpdateMission={updateMission} editingMission={editingMission} />
-
-
+        <MissionForm
+          onAddMission={addMission}
+          onUpdateMission={updateMission}
+          editingMission={editingMission}
+        />
 
         <section className="missions-section">
-            <MissionSearch searchTerm={searchTerm} 
-            setSearchTerm={setSearchTerm} />
+          <MissionSearch
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
 
-            <MissionFilter 
+          <MissionFilter
             statusFilter={statusFilter}
             onStatusChange={setStatusFilter}
             technologyFilter={technologyFilter}
             onTechnologyChange={setTechnologyFilter}
             difficultyFilter={difficultyFilter}
             onDifficultyChange={setDifficultyFilter}
-            />
+            sortOrder={sortOrder}
+            onSortOrderChange={setSortOrder}
+          />
 
           <div className="section-heading">
             <div>
@@ -202,35 +252,59 @@ const sortedMissions = [...filteredMissions].sort((a, b) => b.xp - a.xp);{
           </div>
 
           <div className="missions-grid">
-            {sortedMissions.length === 0 
-            ?
-            (<div className="empty-state">
-              <h3>Nenhuma missão encontrada</h3>
+            {sortedMissions.length === 0 ? (
+              <div className="empty-state">
+                <h3>Nenhuma missão encontrada</h3>
 
-                <p>
-                    Tente alterar sua busca ou
-                      seus filtros.
-              </p></div>) 
-              :
-
-            (sortedMissions.map((mission) => (
-              <MissionCard
-                key={mission.id}
-                title={mission.title}
-                description={mission.description}
-                technology={mission.technology}
-                difficulty={mission.difficulty}
-                xp={mission.xp}
-                completed={mission.completed}
-                onToggle={() => toggleMission(mission.id)}
-                onDelete={() => deleteMission(mission.id)}
-                onEdit={() => setEditingMission(mission)}
-              />
-            )))}
+                <p>Tente alterar sua busca ou seus filtros.</p>
+              </div>
+            ) : (
+              sortedMissions.map((mission) => (
+                <MissionCard
+                  key={mission.id}
+                  title={mission.title}
+                  description={mission.description}
+                  technology={mission.technology}
+                  difficulty={mission.difficulty}
+                  xp={mission.xp}
+                  completed={mission.completed}
+                  onToggle={() => toggleMission(mission.id)}
+                  onDelete={() => deleteMission(mission.id)}
+                  onEdit={() => setEditingMission(mission)}
+                />
+              ))
+            )}
           </div>
         </section>
 
         <Welcome />
+<section className="projects-section">
+          <div className="projects-section__header">
+            <div>
+              <span className="section-eyebrow">Portfólio</span>
+
+              <h2>Central de Projetos</h2>
+
+              <p>
+                Projetos construídos durante sua jornada como desenvolvedor.
+              </p>
+            </div>
+          </div>   
+
+          <div className="projects-grid">
+            {
+              initialProjects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  title={project.title}
+                  description={project.description}
+                  technologies={project.technologies}
+                  status={project.status}
+                />
+              ))
+            }
+          </div>     
+        </section>
       </div>
       <Footer />
     </main>
