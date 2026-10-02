@@ -10,6 +10,7 @@ import MissionForm from "./components/MissionForm";
 import MissionSearch from "./components/MissionSearch";
 import MissionFilter from "./components/MissionFilter";
 import ProjectCard from "./components/ProjectCard";
+import ProjectForm from "./components/ProjectForm";
 const initialMissions = [
   {
     id: 1,
@@ -86,6 +87,7 @@ function App() {
   const [technologyFilter, setTechnologyFilter] = useState("Todas");
   const [difficultyFilter, setDifficultyFilter] = useState("Todas");
   const [sortOrder, setSortOrder] = useState("Maior XP");
+  const [projects, setProjects] = useState(initialProjects);
 
   console.log(statusFilter);
   function toggleMission(missionId) {
@@ -118,6 +120,10 @@ function App() {
     setMissions(updatedMissions);
     setEditingMission(null);
   }
+  function addProject(newProject) {
+    setProjects([...projects, newProject]);
+  }
+
 
   const completedMissions = missions.filter((mission) => mission.completed);
 
@@ -197,6 +203,7 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
     <main className="app">
       <Header />
       <div className="dashboard">
+        <Welcome />
         <ProfileCard
           name="Lucca"
           codename="CodeMaster"
@@ -277,7 +284,7 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
           </div>
         </section>
 
-        <Welcome />
+        
 <section className="projects-section">
           <div className="projects-section__header">
             <div>
@@ -290,10 +297,10 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
               </p>
             </div>
           </div>   
-
+          <ProjectForm onAddProject={addProject} />
           <div className="projects-grid">
             {
-              initialProjects.map((project) => (
+              projects.map((project) => (
                 <ProjectCard
                   key={project.id}
                   title={project.title}

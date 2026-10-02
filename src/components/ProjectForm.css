@@ -1,0 +1,63 @@
+.project-form-section {
+  margin-top: 40px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.project-form-heading {
+  margin-bottom: 20px;
+}
+.project-form-heading p {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+.project-form-heading h2 {
+  margin: 5px 0 0;
+}
+.project-form {
+  display: grid;
+  gap: 16px;
+}
+.project-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.project-form__group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.project-form__group input,
+.project-form__group textarea,
+.project-form__group select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  color: inherit;
+  font: inherit;
+}
+.project-form__group textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.project-form__group select option {
+  color:#101426;
+}
+
+.project-form__button {
+  justify-self: start;
+  padding: 11px 20px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
