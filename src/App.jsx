@@ -132,6 +132,13 @@ function App() {
       setEditingProject(null);
     }
 function deleteProject(projectId) {
+    const showDelete = window.confirm("Tem certeza que deseja excluir este projeto?");
+    if (!showDelete){
+      return;
+    }
+      
+      
+
     const updatedProjects = projects.filter(
       (project) => project.id !== projectId,
     );
