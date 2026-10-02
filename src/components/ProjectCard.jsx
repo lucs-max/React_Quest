@@ -4,7 +4,9 @@ function ProjectCard({
     title, 
     description, 
     technologies,
-    status
+    status,
+    onDelete,
+    onEdit
 }) {
     return(
         <article className="project-card">
@@ -17,6 +19,14 @@ function ProjectCard({
                         {technology}
                     </span>
                 ))}
+            </div>
+            <div className="project-card__actions">
+                <button className="project-card__edit" type="button" onClick={onEdit}>
+                    Editar
+                </button>
+                <button className="project-card__delete" type="button" onClick={onDelete}>
+                    Excluir
+                </button>
             </div>
         </article>
     )

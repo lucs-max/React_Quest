@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./ProjectForm.css";
 
-function ProjectForm({ onAddProject }) {
+function ProjectForm({ onAddProject, editingProject, onUpdateProject }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [technologies, setTechnologies] = useState("");
   const [status, setStatus] = useState("Em andamento");
+
+  useEffect(() => {
+    if (editingProject) {
+      setTitle(editingProject.title);
+      setDescription(editingProject.description);
+      setTechnologies(editingProject.technologies.join(", "));
+      setStatus(editingProject.status);
+    }
+  }, [editingProject]);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -15,15 +24,19 @@ function ProjectForm({ onAddProject }) {
       return;
     }
 
-    const newProject = {
-      id: Date.now(),
+    const project = {
+      id: editingProject ? editingProject.id : Date.now(),
       title: title.trim(),
       description: description.trim(),
       technologies: technologies.split(",").map((tech) => tech.trim()),
       status,
     };
 
-    onAddProject(newProject);
+    if (editingProject) {
+      onUpdateProject(project);
+    } else {
+      onAddProject(project);
+    }
 
     setTitle("");
     setDescription("");
@@ -84,7 +97,7 @@ function ProjectForm({ onAddProject }) {
         </div>
 
         <button type="submit" className="project-form__button">
-          Adicionar Projeto
+          {editingProject ? "Atualizar Projeto" : "Adicionar Projeto"}
         </button>
       </form>
     </section>

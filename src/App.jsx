@@ -88,6 +88,7 @@ function App() {
   const [difficultyFilter, setDifficultyFilter] = useState("Todas");
   const [sortOrder, setSortOrder] = useState("Maior XP");
   const [projects, setProjects] = useState(initialProjects);
+  const [editingProject, setEditingProject] = useState(null);
 
   console.log(statusFilter);
   function toggleMission(missionId) {
@@ -123,7 +124,19 @@ function App() {
   function addProject(newProject) {
     setProjects([...projects, newProject]);
   }
-
+  function updateProject(updatedProject) {
+      const updatedProjects = projects.map((project) =>
+        project.id === updatedProject.id ? updatedProject : project,
+      );
+      setProjects(updatedProjects);
+      setEditingProject(null);
+    }
+function deleteProject(projectId) {
+    const updatedProjects = projects.filter(
+      (project) => project.id !== projectId,
+    );
+    setProjects(updatedProjects);
+  }
 
   const completedMissions = missions.filter((mission) => mission.completed);
 
@@ -296,7 +309,11 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
               
             </div>
           </div>   
-          <ProjectForm onAddProject={addProject} />
+          <ProjectForm
+            onAddProject={addProject}
+            editingProject={editingProject}
+            onUpdateProject={updateProject}
+          />
           <div className="projects-grid">
             {
               projects.map((project) => (
@@ -306,6 +323,8 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
                   description={project.description}
                   technologies={project.technologies}
                   status={project.status}
+                  onDelete={() => deleteProject(project.id)}
+                  onEdit={() => setEditingProject(project)}
                 />
               ))
             }
