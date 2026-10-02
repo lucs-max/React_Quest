@@ -176,7 +176,7 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
     {
       id: 2,
       title: "Projetos",
-      value: 3,
+      value: projects.length,
       description: "Projetos Cadastrados",
     },
     {
@@ -291,10 +291,9 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
               <span className="section-eyebrow">Portfólio</span>
 
               <h2>Central de Projetos</h2>
-
-              <p>
-                Projetos construídos durante sua jornada como desenvolvedor.
-              </p>
+              <p class="project-count">{projects.length}{"  "}{projects.length === 1 ? "projeto" : "projetos"}</p>
+                
+              
             </div>
           </div>   
           <ProjectForm onAddProject={addProject} />
