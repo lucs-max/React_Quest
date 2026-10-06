@@ -60,7 +60,9 @@ const initialProjects = [
       "OpenCV",
       "MediaPipe"
     ],
-    status:"Concluído"
+    status:"Concluído",
+    githubUrl:"https://github.com/seu-usuario/desenho-com-gestos",
+    deployUrl:""
   },
    {
     id: 2,
@@ -68,6 +70,8 @@ const initialProjects = [
     description: "Jogo desenvolvido em Python com detecção e interação.",
     technologies: ["Python", "Pygame"],
     status: "Concluído",
+    githubUrl: "",
+    deployUrl: "",
   },
   {
     id: 3,
@@ -76,6 +80,8 @@ const initialProjects = [
       "Loja virtual que utiliza inteligência artificial para auxiliar o usuário.",
     technologies: ["Python", "Flask", "HTML", "CSS"],
     status: "Concluído",
+    githubUrl: "",
+    deployUrl: "",
   },
 ]
 
@@ -154,6 +160,10 @@ function deleteProject(projectId) {
     0,
   );
 
+  const usedTechnologiesCount = new Set(
+    projects.flatMap((project) => project.technologies).filter(Boolean),
+  ).size;
+
   const filteredMissions = missions.filter(
     // (mission) => mission.title.toLowerCase().includes(searchTerm.toLowerCase())
     (mission) => {
@@ -202,8 +212,8 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
     {
       id: 3,
       title: "Tecnologias",
-      value: 7,
-      description: "Tecnologias Praticadas",
+      value: usedTechnologiesCount,
+      description: "Tecnologias Diferentes Utilizadas",
     },
     {
       id: 4,
@@ -330,6 +340,8 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
                   description={project.description}
                   technologies={project.technologies}
                   status={project.status}
+                  githubUrl={project.githubUrl}
+                  deployUrl={project.deployUrl}
                   onDelete={() => deleteProject(project.id)}
                   onEdit={() => setEditingProject(project)}
                 />

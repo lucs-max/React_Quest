@@ -6,6 +6,8 @@ function ProjectForm({ onAddProject, editingProject, onUpdateProject }) {
   const [description, setDescription] = useState("");
   const [technologies, setTechnologies] = useState("");
   const [status, setStatus] = useState("Em andamento");
+  const [githubUrl, setGithubUrl] = useState("");
+  const [deployUrl, setDeployUrl] = useState("");
 
   useEffect(() => {
     if (editingProject) {
@@ -13,6 +15,8 @@ function ProjectForm({ onAddProject, editingProject, onUpdateProject }) {
       setDescription(editingProject.description);
       setTechnologies(editingProject.technologies.join(", "));
       setStatus(editingProject.status);
+      setGithubUrl(editingProject.githubUrl || "");
+      setDeployUrl(editingProject.deployUrl || "");
     }
   }, [editingProject]);
 
@@ -30,6 +34,8 @@ function ProjectForm({ onAddProject, editingProject, onUpdateProject }) {
       description: description.trim(),
       technologies: technologies.split(",").map((tech) => tech.trim()),
       status,
+      githubUrl,
+      deployUrl,
     };
 
     if (editingProject) {
@@ -42,6 +48,8 @@ function ProjectForm({ onAddProject, editingProject, onUpdateProject }) {
     setDescription("");
     setTechnologies("");
     setStatus("Em andamento");
+    setGithubUrl("");
+    setDeployUrl("");
   }
 
   return (
@@ -94,6 +102,28 @@ function ProjectForm({ onAddProject, editingProject, onUpdateProject }) {
             <option value="Em andamento">Em andamento</option>
             <option value="Concluído">Concluído</option>
           </select>
+        </div>
+
+        <div className="project-form__group">
+          <label htmlFor="project-github-url">URL do GitHub</label>
+          <input
+            type="text"
+            id="project-github-url"
+            value={githubUrl}
+            onChange={(event) => setGithubUrl(event.target.value)}
+            placeholder="Insira a URL do GitHub"
+          />
+        </div>
+
+        <div className="project-form__group">
+          <label htmlFor="project-deploy-url">URL do Deploy</label>
+          <input
+            type="text"
+            id="project-deploy-url"
+            value={deployUrl}
+            onChange={(event) => setDeployUrl(event.target.value)}
+            placeholder="Insira a URL do deploy"
+          />
         </div>
 
         <button type="submit" className="project-form__button">

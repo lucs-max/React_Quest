@@ -47,6 +47,15 @@
   margin-top: 8px;
 }
 
+.project-card__links {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  padding: 5px 9px;
+}
+
 .project-card__edit,
 .project-card__delete {
   padding: 8px 12px;
