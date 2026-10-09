@@ -21,13 +21,18 @@ function ProjectForm({ onAddProject, editingProject, onUpdateProject }) {
   }, [editingProject]);
 
   function handleSubmit(event) {
+
     event.preventDefault();
 
     if (!title.trim() || !description.trim() || !technologies.trim()) {
       alert("Por favor, preencha todos os campos.");
       return;
     }
-
+    if ((githubUrl && !githubUrl.startsWith("http://") && !githubUrl.startsWith("https://")) || 
+    (deployUrl && !deployUrl.startsWith("http://") && !deployUrl.startsWith("https://"))) {
+      alert("Por favor, insira URLs válidas.");
+      return;
+    }
     const project = {
       id: editingProject ? editingProject.id : Date.now(),
       title: title.trim(),
