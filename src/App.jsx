@@ -62,7 +62,7 @@ const initialProjects = [
     ],
     status:"Concluído",
     githubUrl:"https://github.com/seu-usuario/desenho-com-gestos",
-    deployUrl:""
+    deployUrl:"https://react-quest-three.vercel.app/"
   },
    {
     id: 2,
@@ -71,7 +71,7 @@ const initialProjects = [
     technologies: ["Python", "Pygame"],
     status: "Concluído",
     githubUrl: "",
-    deployUrl: "",
+    deployUrl: "https://react-quest-three.vercel.app/",
   },
   {
     id: 3,
@@ -81,7 +81,17 @@ const initialProjects = [
     technologies: ["Python", "Flask", "HTML", "CSS"],
     status: "Concluído",
     githubUrl: "",
-    deployUrl: "",
+    deployUrl: "https://react-quest-three.vercel.app/",
+  },
+  {
+    id: 4,
+    title: "React Quest",
+    description:
+      "Plataforma de aprendizado em React para auxiliar o usuário.",
+    technologies: ["React", "JavaScript", "HTML", "CSS", "Vite"],
+    status: "Em andamento",
+    githubUrl: "https://github.com/lucs-max/React_Quest.git",
+    deployUrl: "https://react-quest-three.vercel.app/",
   },
 ]
 
