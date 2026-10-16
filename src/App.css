@@ -147,3 +147,56 @@
   font-size: 0.9rem;
   opacity: 0.7;
 }
+.skills-section {
+  margin-top: 40px;
+}
+
+.skills-section__header {
+  margin-bottom: 20px;
+}
+
+.skills-section__header h2 {
+  margin: 4px 0 8px;
+}
+
+.skills-section__header p {
+  margin: 0;
+  opacity: 0.7;
+}
+
+.skills-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(220px, 1fr)
+    );
+
+  gap: 16px;
+}
+.achievement {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 20px;
+  padding: 16px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.15);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+}
+
+.achievement > span {
+  font-size: 2rem;
+}
+
+.achievement p {
+  margin: 4px 0 0;
+  opacity: 0.7;
+}

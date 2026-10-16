@@ -11,6 +11,7 @@ import MissionSearch from "./components/MissionSearch";
 import MissionFilter from "./components/MissionFilter";
 import ProjectCard from "./components/ProjectCard";
 import ProjectForm from "./components/ProjectForm";
+import SkillCard from "./components/SkillCard";
 const initialMissions = [
   {
     id: 1,
@@ -52,19 +53,16 @@ const initialMissions = [
 
 const initialProjects = [
   {
-    id:1,
-    title:"Desenho com Gestos",
-    description:"Aplicação que permite desenhar utilizando movimentos das mãos.",
-    technologies:[
-      "Python",
-      "OpenCV",
-      "MediaPipe"
-    ],
-    status:"Concluído",
-    githubUrl:"https://github.com/seu-usuario/desenho-com-gestos",
-    deployUrl:"https://react-quest-three.vercel.app/"
+    id: 1,
+    title: "Desenho com Gestos",
+    description:
+      "Aplicação que permite desenhar utilizando movimentos das mãos.",
+    technologies: ["Python", "OpenCV", "MediaPipe"],
+    status: "Concluído",
+    githubUrl: "https://github.com/seu-usuario/desenho-com-gestos",
+    deployUrl: "https://react-quest-three.vercel.app/",
   },
-   {
+  {
     id: 2,
     title: "Detector de Invasores",
     description: "Jogo desenvolvido em Python com detecção e interação.",
@@ -86,14 +84,13 @@ const initialProjects = [
   {
     id: 4,
     title: "React Quest",
-    description:
-      "Plataforma de aprendizado em React para auxiliar o usuário.",
+    description: "Plataforma de aprendizado em React para auxiliar o usuário.",
     technologies: ["React", "JavaScript", "HTML", "CSS", "Vite"],
     status: "Em andamento",
     githubUrl: "https://github.com/lucs-max/React_Quest.git",
     deployUrl: "https://react-quest-three.vercel.app/",
   },
-]
+];
 
 function App() {
   const [missions, setMissions] = useState(initialMissions);
@@ -141,19 +138,19 @@ function App() {
     setProjects([...projects, newProject]);
   }
   function updateProject(updatedProject) {
-      const updatedProjects = projects.map((project) =>
-        project.id === updatedProject.id ? updatedProject : project,
-      );
-      setProjects(updatedProjects);
-      setEditingProject(null);
-    }
-function deleteProject(projectId) {
-    const showDelete = window.confirm("Tem certeza que deseja excluir este projeto?");
-    if (!showDelete){
+    const updatedProjects = projects.map((project) =>
+      project.id === updatedProject.id ? updatedProject : project,
+    );
+    setProjects(updatedProjects);
+    setEditingProject(null);
+  }
+  function deleteProject(projectId) {
+    const showDelete = window.confirm(
+      "Tem certeza que deseja excluir este projeto?",
+    );
+    if (!showDelete) {
       return;
     }
-      
-      
 
     const updatedProjects = projects.filter(
       (project) => project.id !== projectId,
@@ -198,13 +195,31 @@ function deleteProject(projectId) {
     },
   );
 
-const sortedMissions = [...filteredMissions].sort((a, b) => {
+  const sortedMissions = [...filteredMissions].sort((a, b) => {
     if (sortOrder === "Menor XP") {
       return a.xp - b.xp; //menor para o maior
     }
 
     return b.xp - a.xp; //maior para o menor
   });
+
+  const completedProjects = projects.filter(
+    (project) => project.status === "Concluído",
+  );
+
+  const technologyXP = {};
+  completedProjects.forEach((project) => {
+    project.technologies.forEach((technology) => {
+      technologyXP[technology] = (technologyXP[technology] || 0) + 50;
+    });
+  });
+
+  const skills = Object.entries(technologyXP).map(([tech, xp]) => ({
+    tech,
+    xp,
+  }));
+
+  const hasSkillAchievement = skills.some((skill) => skill.xp >= 100);
 
   const summaryData = [
     {
@@ -324,40 +339,70 @@ const sortedMissions = [...filteredMissions].sort((a, b) => {
           </div>
         </section>
 
-        
-<section className="projects-section">
+        <section className="projects-section">
           <div className="projects-section__header">
             <div>
               <span className="section-eyebrow">Portfólio</span>
 
               <h2>Central de Projetos</h2>
-              <p class="project-count">{projects.length}{"  "}{projects.length === 1 ? "projeto" : "projetos"}</p>
-                
-              
+              <p class="project-count">
+                {projects.length}
+                {"  "}
+                {projects.length === 1 ? "projeto" : "projetos"}
+              </p>
             </div>
-          </div>   
+          </div>
           <ProjectForm
             onAddProject={addProject}
             editingProject={editingProject}
             onUpdateProject={updateProject}
           />
           <div className="projects-grid">
-            {
-              projects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  title={project.title}
-                  description={project.description}
-                  technologies={project.technologies}
-                  status={project.status}
-                  githubUrl={project.githubUrl}
-                  deployUrl={project.deployUrl}
-                  onDelete={() => deleteProject(project.id)}
-                  onEdit={() => setEditingProject(project)}
-                />
-              ))
-            }
-          </div>     
+            {projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                title={project.title}
+                description={project.description}
+                technologies={project.technologies}
+                status={project.status}
+                githubUrl={project.githubUrl}
+                deployUrl={project.deployUrl}
+                onDelete={() => deleteProject(project.id)}
+                onEdit={() => setEditingProject(project)}
+              />
+            ))}
+          </div>
+        </section>
+        <section className="skills-section">
+          <div className="skills-section__header">
+            <span className="section-eyebrow">Evolução Dev</span>
+
+            {hasSkillAchievement && (
+              <div className="achievement">
+                <span>🏆</span>
+
+                <div>
+                  <strong>Especialista Iniciante</strong>
+
+                  <p>Você alcançou 100 XP em uma tecnologia.</p>
+                </div>
+              </div>
+            )}
+
+            <h2>Régua de Evolução</h2>
+
+            <p>Veja como seus projetos estão desenvolvendo suas habilidades.</p>
+          </div>
+
+          <div className="skills-grid">
+            {skills.map((skill) => (
+              <SkillCard
+                key={skill.tech}
+                technology={skill.tech}
+                xp={skill.xp}
+              />
+            ))}
+          </div>
         </section>
       </div>
       <Footer />
