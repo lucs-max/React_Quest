@@ -1,17 +1,15 @@
 import { useState } from "react";
+import {Routes, Route} from "react-router";
 import "./App.css";
+
+import DashboardPage from "./pages/DashboardPage";
+import MissionPage from "./pages/MissionPage";
+import ProjectPage from "./pages/ProjectPage";
+import EvolutionPage from "./pages/EvolutionPage";
+
+import Navigation from "./components/Navigation";
 import Header from "./components/Header";
-import Welcome from "./components/Welcome";
 import Footer from "./components/Footer";
-import ProfileCard from "./components/ProfileCard";
-import SummaryCard from "./components/SummaryCard";
-import MissionCard from "./components/MissionCard";
-import MissionForm from "./components/MissionForm";
-import MissionSearch from "./components/MissionSearch";
-import MissionFilter from "./components/MissionFilter";
-import ProjectCard from "./components/ProjectCard";
-import ProjectForm from "./components/ProjectForm";
-import SkillCard from "./components/SkillCard";
 const initialMissions = [
   {
     id: 1,
@@ -254,159 +252,71 @@ function App() {
     },
   ];
 
-  return (
-    <main className="app">
-      <Header />
-      <div className="dashboard">
-        <Welcome />
-        <ProfileCard
-          name="Lucca"
-          codename="CodeMaster"
-          favoriteArea="Game Development"
-          level="Aprendiz React"
+return (
+  <main className="app">
+    <Header />
+    <Navigation />
+    <div className="dashboard">
+      <Routes>
+        <Route
+          path="/"
+          element={<DashboardPage summaryData={summaryData} />}
         />
 
-        <section className="summary-section">
-          <h2>Resumo da Jornada</h2>
-          <div className="summary-grid">
-            {summaryData.map((item) => (
-              <SummaryCard
-                key={item.id}
-                title={item.title}
-                value={item.value}
-                description={item.description}
-              />
-            ))}
-          </div>
-        </section>
-
-        <MissionForm
-          onAddMission={addMission}
-          onUpdateMission={updateMission}
-          editingMission={editingMission}
+        <Route
+          path="/missions"
+          element={
+            <MissionPage
+              missions={missions}
+              sortedMissions={sortedMissions}
+              onAddMission={addMission}
+              editingMission={editingMission}
+              onUpdateMission={updateMission}
+              onToggleMission={toggleMission}
+              onDeleteMission={deleteMission}
+              onEditMission={setEditingMission}
+              searchTerm={searchTerm}
+              onSearchTermChange={setSearchTerm}
+              statusFilter={statusFilter}
+              onStatusChange={setStatusFilter}
+              technologyFilter={technologyFilter}
+              onTechnologyChange={setTechnologyFilter}
+              difficultyFilter={difficultyFilter}
+              onDifficultyChange={setDifficultyFilter}
+              sortOrder={sortOrder}
+              onSortOrderChange={setSortOrder}
+            />
+          }
         />
 
-        <section className="missions-section">
-          <MissionSearch
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-          />
+        <Route
+          path="/projects"
+          element={
+            <ProjectPage
+              projects={projects}
+              onAddProject={addProject}
+              editingProject={editingProject}
+              onUpdateProject={updateProject}
+              onDeleteProject={deleteProject}
+              onEditProject={setEditingProject}
+            />
+          }
+        />
 
-          <MissionFilter
-            statusFilter={statusFilter}
-            onStatusChange={setStatusFilter}
-            technologyFilter={technologyFilter}
-            onTechnologyChange={setTechnologyFilter}
-            difficultyFilter={difficultyFilter}
-            onDifficultyChange={setDifficultyFilter}
-            sortOrder={sortOrder}
-            onSortOrderChange={setSortOrder}
-          />
+        <Route
+          path="/evolution"
+          element={
+            <EvolutionPage
+              skills={skills}
+              hasSkillAchievement={hasSkillAchievement}
+            />
+          }
+        />
+      </Routes>
+    </div>
 
-          <div className="section-heading">
-            <div>
-              <p className="section-heading__tag">Central de Missões</p>
-
-              <h2>Próximos Desafios</h2>
-            </div>
-
-            <span> {missions.length} missões</span>
-          </div>
-
-          <div className="missions-grid">
-            {sortedMissions.length === 0 ? (
-              <div className="empty-state">
-                <h3>Nenhuma missão encontrada</h3>
-
-                <p>Tente alterar sua busca ou seus filtros.</p>
-              </div>
-            ) : (
-              sortedMissions.map((mission) => (
-                <MissionCard
-                  key={mission.id}
-                  title={mission.title}
-                  description={mission.description}
-                  technology={mission.technology}
-                  difficulty={mission.difficulty}
-                  xp={mission.xp}
-                  completed={mission.completed}
-                  onToggle={() => toggleMission(mission.id)}
-                  onDelete={() => deleteMission(mission.id)}
-                  onEdit={() => setEditingMission(mission)}
-                />
-              ))
-            )}
-          </div>
-        </section>
-
-        <section className="projects-section">
-          <div className="projects-section__header">
-            <div>
-              <span className="section-eyebrow">Portfólio</span>
-
-              <h2>Central de Projetos</h2>
-              <p class="project-count">
-                {projects.length}
-                {"  "}
-                {projects.length === 1 ? "projeto" : "projetos"}
-              </p>
-            </div>
-          </div>
-          <ProjectForm
-            onAddProject={addProject}
-            editingProject={editingProject}
-            onUpdateProject={updateProject}
-          />
-          <div className="projects-grid">
-            {projects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                title={project.title}
-                description={project.description}
-                technologies={project.technologies}
-                status={project.status}
-                githubUrl={project.githubUrl}
-                deployUrl={project.deployUrl}
-                onDelete={() => deleteProject(project.id)}
-                onEdit={() => setEditingProject(project)}
-              />
-            ))}
-          </div>
-        </section>
-        <section className="skills-section">
-          <div className="skills-section__header">
-            <span className="section-eyebrow">Evolução Dev</span>
-
-            {hasSkillAchievement && (
-              <div className="achievement">
-                <span>🏆</span>
-
-                <div>
-                  <strong>Especialista Iniciante</strong>
-
-                  <p>Você alcançou 100 XP em uma tecnologia.</p>
-                </div>
-              </div>
-            )}
-
-            <h2>Régua de Evolução</h2>
-
-            <p>Veja como seus projetos estão desenvolvendo suas habilidades.</p>
-          </div>
-
-          <div className="skills-grid">
-            {skills.map((skill) => (
-              <SkillCard
-                key={skill.tech}
-                technology={skill.tech}
-                xp={skill.xp}
-              />
-            ))}
-          </div>
-        </section>
-      </div>
-      <Footer />
-    </main>
+    <Footer />
+  </main>
   );
 }
 export default App;
