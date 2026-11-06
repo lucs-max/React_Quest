@@ -1,6 +1,6 @@
 import ProjectCard from "../components/ProjectCard";
 import ProjectForm from "../components/ProjectForm";
-
+import GithubExplorer from "../components/GithubExplorer";
 function ProjectPage({
   projects,
   onAddProject,
@@ -44,6 +44,7 @@ function ProjectPage({
           />
         ))}
       </div>
+      <GithubExplorer />
     </section>
   );
 }
