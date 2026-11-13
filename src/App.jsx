@@ -1,5 +1,6 @@
-import { useState } from "react";
-import {Routes, Route} from "react-router";
+import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router";
+import { supabase } from "./services/supabaseClient";
 import "./App.css";
 
 import DashboardPage from "./pages/DashboardPage";
@@ -10,98 +11,94 @@ import EvolutionPage from "./pages/EvolutionPage";
 import Navigation from "./components/Navigation";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-const initialMissions = [
-  {
-    id: 1,
-    title: "Criar componente de perfil",
-    description: "Monte um card com nome, codinome e área favorita.",
-    technology: "React",
-    difficulty: "Fácil",
-    xp: 50,
-    completed: true,
-  },
-  {
-    id: 2,
-    title: "Reutilizar um componente",
-    description: "Use o mesmo componente para exibir dados diferentes.",
-    technology: "React",
-    difficulty: "Fácil",
-    xp: 50,
-    completed: true,
-  },
-  {
-    id: 3,
-    title: "Criar a Central de Missões",
-    description: "Exiba uma lista de missões utilizando componentes.",
-    technology: "React",
-    difficulty: "Média",
-    xp: 100,
-    completed: false,
-  },
-  {
-    id: 4,
-    title: "Investigar um erro",
-    description: "Encontre e corrija um problema de props ou estado.",
-    technology: "Debug",
-    difficulty: "Média",
-    xp: 80,
-    completed: true,
-  },
-];
-
-const initialProjects = [
-  {
-    id: 1,
-    title: "Desenho com Gestos",
-    description:
-      "Aplicação que permite desenhar utilizando movimentos das mãos.",
-    technologies: ["Python", "OpenCV", "MediaPipe"],
-    status: "Concluído",
-    githubUrl: "https://github.com/seu-usuario/desenho-com-gestos",
-    deployUrl: "https://react-quest-three.vercel.app/",
-  },
-  {
-    id: 2,
-    title: "Detector de Invasores",
-    description: "Jogo desenvolvido em Python com detecção e interação.",
-    technologies: ["Python", "Pygame"],
-    status: "Concluído",
-    githubUrl: "",
-    deployUrl: "https://react-quest-three.vercel.app/",
-  },
-  {
-    id: 3,
-    title: "Loja Virtual com IA",
-    description:
-      "Loja virtual que utiliza inteligência artificial para auxiliar o usuário.",
-    technologies: ["Python", "Flask", "HTML", "CSS"],
-    status: "Concluído",
-    githubUrl: "",
-    deployUrl: "https://react-quest-three.vercel.app/",
-  },
-  {
-    id: 4,
-    title: "React Quest",
-    description: "Plataforma de aprendizado em React para auxiliar o usuário.",
-    technologies: ["React", "JavaScript", "HTML", "CSS", "Vite"],
-    status: "Em andamento",
-    githubUrl: "https://github.com/lucs-max/React_Quest.git",
-    deployUrl: "https://react-quest-three.vercel.app/",
-  },
-];
 
 function App() {
-  const [missions, setMissions] = useState(initialMissions);
+  const [missions, setMissions] = useState([]);
   const [editingMission, setEditingMission] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("Todas");
   const [technologyFilter, setTechnologyFilter] = useState("Todas");
   const [difficultyFilter, setDifficultyFilter] = useState("Todas");
   const [sortOrder, setSortOrder] = useState("Maior XP");
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = useState([]);
   const [editingProject, setEditingProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
-  console.log(statusFilter);
+  useEffect(() => {
+    let active = true;
+
+    async function loadData() {
+      setLoading(true);
+      setLoadError("");
+      try {
+        const [projectsResult, missionsResult] = await Promise.all([
+          supabase.from("projects").select("*").order("created_at"),
+
+          supabase.from("missions").select("*").order("created_at"),
+        ]);
+
+        if (projectsResult.error) {
+          throw projectsResult.error;
+        }
+
+        if (missionsResult.error) {
+          throw missionsResult.error;
+        }
+
+        const formattedProjects = (projectsResult.data || []).map(
+          (project) => ({
+            id: project.id,
+            title: project.title,
+            description: project.description,
+            technologies: project.technologies || [],
+            status: project.status,
+            githubUrl: project.github_url || "",
+            deployUrl: project.deploy_url || "",
+          }),
+        );
+
+        const formattedMissions = (missionsResult.data || []).map(
+          (mission) => ({
+            id: mission.id,
+            title: mission.title,
+            description: mission.description,
+            technology: mission.technology,
+            difficulty: mission.difficulty,
+            xp: mission.xp,
+            completed: mission.completed,
+          }),
+        );
+        if (!active) return;
+
+        setProjects(formattedProjects);
+        setMissions(formattedMissions);
+
+        console.log("Projetos:", formattedProjects);
+
+        console.log("Missões:", formattedMissions);
+      } catch (error) {
+        if (active) {
+          setLoadError(
+            error instanceof Error
+              ? error.message
+              : "Erro desconhecido ao carregar os dados.",
+          );
+          console.error(error);
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+    loadData();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   function toggleMission(missionId) {
     const updatedMissions = missions.map((mission) => {
       if (mission.id === missionId) {
@@ -252,71 +249,96 @@ function App() {
     },
   ];
 
-return (
-  <main className="app">
-    <Header />
-    <Navigation />
-    <div className="dashboard">
-      <Routes>
-        <Route
-          path="/"
-          element={<DashboardPage summaryData={summaryData} />}
-        />
+  //consulta banco de dados
 
-        <Route
-          path="/missions"
-          element={
-            <MissionPage
-              missions={missions}
-              sortedMissions={sortedMissions}
-              onAddMission={addMission}
-              editingMission={editingMission}
-              onUpdateMission={updateMission}
-              onToggleMission={toggleMission}
-              onDeleteMission={deleteMission}
-              onEditMission={setEditingMission}
-              searchTerm={searchTerm}
-              onSearchTermChange={setSearchTerm}
-              statusFilter={statusFilter}
-              onStatusChange={setStatusFilter}
-              technologyFilter={technologyFilter}
-              onTechnologyChange={setTechnologyFilter}
-              difficultyFilter={difficultyFilter}
-              onDifficultyChange={setDifficultyFilter}
-              sortOrder={sortOrder}
-              onSortOrderChange={setSortOrder}
+  async function loadProjects() {
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      console.error("Erro ao carregar projetos:", error.message);
+      return;
+    }
+    console.log("Projetos carregados do Supabase:", data);
+  }
+
+  return (
+    <main className="app">
+      <Header />
+
+      <Navigation />
+      <div className="dashboard">
+        {loading ? (
+          <p role="status"> Carregando sua jornada... </p>
+        ) : loadError ? (
+          <p role="alert">
+            Não foi possível carregar os dados.
+            {` ${loadError}`}
+          </p>
+        ) : (
+          <Routes>
+            <Route
+              path="/"
+              element={<DashboardPage summaryData={summaryData} />}
             />
-          }
-        />
 
-        <Route
-          path="/projects"
-          element={
-            <ProjectPage
-              projects={projects}
-              onAddProject={addProject}
-              editingProject={editingProject}
-              onUpdateProject={updateProject}
-              onDeleteProject={deleteProject}
-              onEditProject={setEditingProject}
+            <Route
+              path="/missions"
+              element={
+                <MissionPage
+                  missions={missions}
+                  sortedMissions={sortedMissions}
+                  onAddMission={addMission}
+                  editingMission={editingMission}
+                  onUpdateMission={updateMission}
+                  onToggleMission={toggleMission}
+                  onDeleteMission={deleteMission}
+                  onEditMission={setEditingMission}
+                  searchTerm={searchTerm}
+                  onSearchTermChange={setSearchTerm}
+                  statusFilter={statusFilter}
+                  onStatusChange={setStatusFilter}
+                  technologyFilter={technologyFilter}
+                  onTechnologyChange={setTechnologyFilter}
+                  difficultyFilter={difficultyFilter}
+                  onDifficultyChange={setDifficultyFilter}
+                  sortOrder={sortOrder}
+                  onSortOrderChange={setSortOrder}
+                />
+              }
             />
-          }
-        />
 
-        <Route
-          path="/evolution"
-          element={
-            <EvolutionPage
-              skills={skills}
-              hasSkillAchievement={hasSkillAchievement}
+            <Route
+              path="/projects"
+              element={
+                <ProjectPage
+                  projects={projects}
+                  onAddProject={addProject}
+                  editingProject={editingProject}
+                  onUpdateProject={updateProject}
+                  onDeleteProject={deleteProject}
+                  onEditProject={setEditingProject}
+                />
+              }
             />
-          }
-        />
-      </Routes>
-    </div>
 
-    <Footer />
-  </main>
+            <Route
+              path="/evolution"
+              element={
+                <EvolutionPage
+                  skills={skills}
+                  hasSkillAchievement={hasSkillAchievement}
+                />
+              }
+            />
+          </Routes>
+        )}
+      </div>
+
+      <Footer />
+    </main>
   );
 }
 export default App;
